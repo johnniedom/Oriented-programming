@@ -65,5 +65,89 @@ console.log(Johnnie.__proto__);
 console.dir(Person.prototype.constructor);
 
 //working with Arrays
-const arr = [2,5,7,65,4,4]
+const arr = [2, 5, 7, 65, 4, 4];
 console.log(arr.__proto__);
+console.log(arr.__proto__ === Array.prototype); // true
+
+// with you can add a new array method
+//😂 Avoid it. this just for experiment
+
+Array.prototype.unique = function () {
+  return [...new Set(this)];
+};
+
+const h1 = document.querySelector(`h1`);
+
+// console.dir(h1);
+
+/*
+Coding Challenge #1
+Your tasks:
+1. Use a constructor function to implement a 'Car'. A car has a 'brake' and a
+'speed' property. The 'speed' property is the current speed of the car in
+km/h
+2. Implement an 'accelerate' method that will increase the car's speed by 10,
+and log the new speed to the console
+3. Implement a 'brake' method that will decrease the car's speed by 5, and log
+the new speed to the console
+4. Create 2 'Car' objects and experiment with calling 'accelerate' and
+'brake' multiple times on each of them
+Test data:
+§ Data car 1: 'BMW' going at 120 km/h
+§ Data car 2: 'Mercedes' going at 95 km/h
+GOOD LUCK 😀
+*/
+// SOLUTION 1
+const Car = function (name, speed) {
+  this.name = name
+  this.speed = speed;
+};
+// SOLUTION 2
+Car.prototype.accelerate = function () {
+  this.speed += 10
+  console.log(`${this.name} going at ${this.speed}km/h`);
+};
+
+
+
+// SOLUTION 3
+Car.prototype.brake = function () {
+  // console.log(this);
+  this.speed -= 5
+  console.log(`${this.name} going at ${this.speed}km/h`);
+};
+
+
+// SOLUTION 4
+
+const BMW = new Car(`BWM`, 120);
+const Mercedes = new Car (`Mercedes`, 95)
+
+BMW.accelerate()
+BMW.accelerate()
+BMW.brake();
+BMW.brake();
+
+
+//  TOPIC ES6 CLASSES
+
+// class expression 
+const PersonCl1 = class {
+
+}
+
+// class declaration 
+class PersonCl {
+ constructor (firstName, birthYear){
+  this.firstName = firstName
+  this.birthYear = birthYear
+ }
+
+ // this method will be added to .prototype of PersonCl just like the constructor function
+ calAge(){
+  console.log(2022 - this.birthYear);
+ }
+
+}
+
+const Onyi = new PersonCl (`Jessica`, 2002)
