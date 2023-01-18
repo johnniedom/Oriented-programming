@@ -99,55 +99,92 @@ GOOD LUCK 😀
 */
 // SOLUTION 1
 const Car = function (name, speed) {
-  this.name = name
+  this.name = name;
   this.speed = speed;
 };
 // SOLUTION 2
 Car.prototype.accelerate = function () {
-  this.speed += 10
+  this.speed += 10;
   console.log(`${this.name} going at ${this.speed}km/h`);
 };
-
-
 
 // SOLUTION 3
 Car.prototype.brake = function () {
   // console.log(this);
-  this.speed -= 5
+  this.speed -= 5;
   console.log(`${this.name} going at ${this.speed}km/h`);
 };
-
 
 // SOLUTION 4
 
 const BMW = new Car(`BWM`, 120);
-const Mercedes = new Car (`Mercedes`, 95)
+const Mercedes = new Car(`Mercedes`, 95);
 
-BMW.accelerate()
-BMW.accelerate()
-BMW.brake();
-BMW.brake();
-
+// BMW.accelerate()
+// BMW.accelerate()
+// BMW.brake();
+// BMW.brake();
 
 //  TOPIC ES6 CLASSES
 
-// class expression 
-const PersonCl1 = class {
+// class expression
+const PersonCl1 = class {};
 
-}
-
-// class declaration 
+// class declaration
 class PersonCl {
- constructor (firstName, birthYear){
-  this.firstName = firstName
-  this.birthYear = birthYear
- }
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  }
 
- // this method will be added to .prototype of PersonCl just like the constructor function
- calAge(){
-  console.log(2022 - this.birthYear);
- }
+  // this method will be added to .prototype of PersonCl just like the constructor function
+  calAgeD() {
+    console.log(2022 - this.birthYear);
+  }
+  //  console.log(fullName);
 
+  // Be careful when ever you are trying to set a property
+  // that already exist using the _under score
+
+  set fullName(name) {
+    console.log(name.includes(` `));
+    if (name.includes(` `)) this._fullName = name;
+    else alert(`${name} is not a Full Name kindly input your Full Name `);
+  }
+  // to be able to access the name using the dot notation 
+  get fullName() {
+    return this._fullName;
+  }
 }
 
-const Onyi = new PersonCl (`Jessica`, 2002)
+const Onyi = new PersonCl(`Onyi Ikeokwu`, 2002);
+// // Onyi.calAgeD();
+// console.log(Onyi);
+
+// PersonCl.fullNameChecker = `OnyiIkeokwu`
+// console.log(Onyi.fullName);
+// console.log(PersonCl.fullNameChecker);
+
+// feature
+//1. Classes are Not hoisted
+// 2. classes are first-class citizen
+// 3. classes are executed in strict mode
+
+// TOPIC Getters and Setters
+const account = {
+  owner: `Johnnie`,
+  movement: [200, 580, 904, 680, 400],
+
+  get latest() {
+    return account.movement.slice().pop();
+  },
+
+  set latestMov(mov) {
+    this.movement.push(mov);
+  },
+};
+
+console.log(account.latest);
+
+account.latestMov = 50;
+//  console.log(account.movement);
