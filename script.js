@@ -34,7 +34,7 @@ console.log(Johnnie, Nonye, Chimdindu);
 // function do have access to the prototype method and property of that
 // constructor function.
 Person.prototype.calAge = function () {
-  console.log(2023 - this.yearBirth);
+  // console.log(2023 - this.yearBirth);
 };
 
 Johnnie.calAge();
@@ -48,21 +48,21 @@ console.log(Johnnie.__proto__);
 
 // Confirmation the person.prototype is prototype of Johnnie
 // it is the prototype of linked Object
-console.log(Johnnie.__proto__ === Person.prototype); // true
-console.log(Person.prototype.isPrototypeOf(Johnnie)); // prototypeOfLinkedObject
+// console.log(Johnnie.__proto__ === Person.prototype); // true
+// console.log(Person.prototype.isPrototypeOf(Johnnie)); // prototypeOfLinkedObject
 
 // you also set properties
 Person.prototype.Surname = 'Modebe';
 
-console.log(Johnnie.Surname, Chimdindu.Surname);
+// console.log(Johnnie.Surname, Chimdindu.Surname);
 
 // checking properties
-console.log(Johnnie.hasOwnProperty(`firstName`));
-console.log(Johnnie.hasOwnProperty(`Surname`));
+// console.log(Johnnie.hasOwnProperty(`firstName`));
+// console.log(Johnnie.hasOwnProperty(`Surname`));
+// 
+// console.log(Johnnie.__proto__);
 
-console.log(Johnnie.__proto__);
-
-console.dir(Person.prototype.constructor);
+// console.dir(Person.prototype.constructor);
 
 //working with Arrays
 const arr = [2, 5, 7, 65, 4, 4];
@@ -137,7 +137,10 @@ class PersonCl {
     this.birthYear = birthYear;
   }
 
-  // this method will be added to .prototype of PersonCl just like the constructor function
+  // this method will be added to .prototype of PersonCl
+  // just like the constructor function
+
+  // They can basicaLly Know as : INSTANCES
   calAgeD() {
     console.log(2022 - this.birthYear);
   }
@@ -147,11 +150,11 @@ class PersonCl {
   // that already exist using the _under score
 
   set fullName(name) {
-    console.log(name.includes(` `));
+    // console.log(name.includes(` `));
     if (name.includes(` `)) this._fullName = name;
     else alert(`${name} is not a Full Name kindly input your Full Name `);
   }
-  // to be able to access the name using the dot notation 
+  // to be able to access the name using the dot notation
   get fullName() {
     return this._fullName;
   }
@@ -184,7 +187,130 @@ const account = {
   },
 };
 
-console.log(account.latest);
+// console.log(account.latest);
 
 account.latestMov = 50;
 //  console.log(account.movement);
+
+// TOPIC STATIC
+
+// first example of static method
+
+// 👉🏽 for constructor functions
+const Animal = function (firstName, birthYear) {
+  this.firstName = firstName;
+  this.yearBirth = birthYear;
+};
+
+const Cat = new Animal(`ELephant`, 2021);
+
+Animal.greeting = function () {
+  // console.log(`hey there 👋🏼`);
+};
+
+// to call the function simply
+Animal.greeting();
+
+// this can't because it's the direct child of the
+// Animal.Cat ();
+
+// For classes
+
+class Phone {
+  constructor(make, version) {
+    this.fullName = make;
+    this.version = version;
+  }
+  //N/B Static are direct child of function and not the prototype
+  static hey() {
+    // console.dir(this);
+    // console.dir(make);
+  }
+}
+const Iphone11 = new Phone(`Iphone`, 11);
+Phone.hey();
+
+// TOPIC OBJECT.CREATE
+
+const PersonProto = {
+  getAge() {
+    // console.log(2037 - this.birthYear);
+  },
+
+  init (fullName, birthYear){
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  }
+};
+// The amaka will Now be an empty object
+// which has the prototype we created above
+const amaka = Object.create(PersonProto);
+
+// putting values is into that object
+amaka.name = `Amaka`;
+amaka.birthYear = 2003;
+
+amaka.getAge()
+
+const Chiamaka = Object.create(PersonProto);
+
+Chiamaka.init(`Chiamaka`, 1999)
+Chiamaka.getAge()
+
+/*
+Coding Challenge #2
+Your tasks:
+1. Re-create Challenge #1, but this time using an ES6 class (call it 'CarCl')
+2. Add a getter called 'speedUS' which returns the current speed in mi/h (divide
+by 1.6)
+3. Add a setter called 'speedUS' which sets the current speed in mi/h (but
+converts it to km/h before storing the value, by multiplying the input by 1.6)
+4. Create a new car and experiment with the 'accelerate' and 'brake'
+methods, and with the getter and setter.
+Test data:
+§ Data car 1: 'Ford' going at 120 km/h
+GOOD LUCK 😀 
+*/ 
+
+class CarCl {   
+// SOLUTION 1
+constructor(name, speed) {
+        this.name = name;
+        this.speed = speed;
+      };
+
+      accelerate(){
+        this.speed += 10
+        console.log(`${this.name} is moving at ${this.speed}km/h`);
+      }
+      brake(){
+        this.speed -= 5
+        console.log(`${this.name} is moving at ${this.speed}km/h`);
+      }
+      // SOLUTION2
+      get speedUS(){
+        return this.speed / 1.6
+      }
+      // SOLUTION 3
+      set speedUS(speed){
+        this.speed = speed * 1.6
+      }
+
+      // SOLUTION 4 
+    
+   
+    }
+const Ford = new CarCl (`Ford`, 120)
+
+console.log(Ford.speedUS);
+Ford.speedUS = 75
+console.log(Ford);
+console.log(Ford.speed);
+
+Ford.accelerate();
+Ford.accelerate();
+Ford.brake();
+Ford.brake();
+Ford.brake();
+Ford.brake();
+Ford.brake();
