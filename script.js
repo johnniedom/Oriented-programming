@@ -59,7 +59,7 @@ Person.prototype.Surname = 'Modebe';
 // checking properties
 // console.log(Johnnie.hasOwnProperty(`firstName`));
 // console.log(Johnnie.hasOwnProperty(`Surname`));
-// 
+//
 // console.log(Johnnie.__proto__);
 
 // console.dir(Person.prototype.constructor);
@@ -237,10 +237,10 @@ const PersonProto = {
     // console.log(2037 - this.birthYear);
   },
 
-  init (fullName, birthYear){
+  init(fullName, birthYear) {
     this.fullName = fullName;
     this.birthYear = birthYear;
-  }
+  },
 };
 // The amaka will Now be an empty object
 // which has the prototype we created above
@@ -250,12 +250,12 @@ const amaka = Object.create(PersonProto);
 amaka.name = `Amaka`;
 amaka.birthYear = 2003;
 
-amaka.getAge()
+amaka.getAge();
 
 const Chiamaka = Object.create(PersonProto);
 
-Chiamaka.init(`Chiamaka`, 1999)
-Chiamaka.getAge()
+Chiamaka.init(`Chiamaka`, 1999);
+Chiamaka.getAge();
 
 /*
 Coding Challenge #2
@@ -270,47 +270,165 @@ methods, and with the getter and setter.
 Test data:
 § Data car 1: 'Ford' going at 120 km/h
 GOOD LUCK 😀 
-*/ 
+*/
 
-class CarCl {   
-// SOLUTION 1
-constructor(name, speed) {
-        this.name = name;
-        this.speed = speed;
-      };
+class CarCl {
+  // SOLUTION 1
+  constructor(name, speed) {
+    this.name = name;
+    this.speed = speed;
+  }
 
-      accelerate(){
-        this.speed += 10
-        console.log(`${this.name} is moving at ${this.speed}km/h`);
-      }
-      brake(){
-        this.speed -= 5
-        console.log(`${this.name} is moving at ${this.speed}km/h`);
-      }
-      // SOLUTION2
-      get speedUS(){
-        return this.speed / 1.6
-      }
-      // SOLUTION 3
-      set speedUS(speed){
-        this.speed = speed * 1.6
-      }
+  accelerate() {
+    this.speed += 10;
+    console.log(`${this.name} is moving at ${this.speed}km/h`);
+  }
+  brake() {
+    this.speed -= 5;
+    console.log(`${this.name} is moving at ${this.speed}km/h`);
+  }
+  // SOLUTION2
+  get speedUS() {
+    return this.speed / 1.6;
+  }
+  // SOLUTION 3
+  set speedUS(speed) {
+    this.speed = speed * 1.6;
+  }
 
-      // SOLUTION 4 
-    
-   
-    }
-const Ford = new CarCl (`Ford`, 120)
+  // SOLUTION 4
+}
+const Ford = new CarCl(`Ford`, 120);
 
 console.log(Ford.speedUS);
-Ford.speedUS = 75
+Ford.speedUS = 75;
 console.log(Ford);
 console.log(Ford.speed);
 
-Ford.accelerate();
-Ford.accelerate();
-Ford.brake();
-Ford.brake();
-Ford.brake();
-Ford.brake();
-Ford.brake();
+// Ford.accelerate();
+// Ford.accelerate();
+// Ford.brake();
+// Ford.brake();
+// Ford.brake();
+// Ford.brake();
+// Ford.brake();
+
+// TOPIC INHERITANCE B/W : Class (constructors functions)
+
+const PersonH = function (firstName, birthYear) {
+  this.firstName = firstName;
+  this.birthYear = birthYear;
+};
+
+PersonH.prototype.calAge = function () {
+  console.log(2037 - this.birthYear);
+};
+
+const Student = function (firstName, birthYear, course) {
+  // this.firstName = firstName;
+  // this.birthYear = birthYear;
+
+  // /* 👉🏽 Use of Inheritance */
+  PersonH.call(this, firstName, birthYear);
+
+  this.course = course;
+};
+
+// Linking Prototypes
+// For the child to be able to inherit from the parent prototype (PersonH)
+// N/b this must be created before adding any more object to the child (instance)
+Student.prototype = Object.create(PersonH.prototype);
+
+// Student.prototype.introduce = function () {
+//   console.log(`Hell my name is ${this.firstName} and I study ${this.course}`);
+// };
+Student.prototype.constructor = Student;
+
+console.dir(Student.prototype.constructor);
+const mike = new Student(`Mike`, 2002, `Computer Science`);
+console.dir(Student);
+
+console.dir(mike);
+console.log(mike);
+console.log(mike.__proto__);
+
+console.log(mike instanceof Student);
+console.log(mike instanceof PersonH);
+console.log(mike instanceof Object);
+// mike.introduce()
+// mike.calAge()
+
+/* 
+Coding Challenge #3
+Your tasks:
+1. Use a constructor function to implement an Electric Car (called 'EV') as a child
+"class" of 'Car'. Besides a make and current speed, the 'EV' also has the
+current battery charge in % ('charge' property)
+2. Implement a 'chargeBattery' method which takes an argument
+'chargeTo' and sets the battery charge to 'chargeTo'
+3. Implement an 'accelerate' method that will increase the car's speed by 20,
+and decrease the charge by 1%. Then log a message like this: 'Tesla going at 140
+km/h, with a charge of 22%'
+4. Create an electric car object and experiment with calling 'accelerate',
+'brake' and 'chargeBattery' (charge to 90%). Notice what happens when
+you 'accelerate'! Hint: Review the definition of polymorphism 😉
+Test data:
+§ Data car 1: 'Tesla' going at 120 km/h, with a charge of 23%
+GOOD LUCK 😀 */
+// SOLUTION 1
+const CarEV = function (name, speed) {
+  this.name = name;
+  this.speed = speed;
+};
+
+// accelerate() {
+//   this.speed += 10;
+//   console.log(`${this.name} is moving at ${this.speed}km/h`);
+// }
+// brake() {
+//   this.speed -= 5;
+//   console.log(`${this.name} is moving at ${this.speed}km/h`);
+// }
+
+CarEV.prototype.brake = function () {
+  this.speed -= 5;
+  console.log(`${this.name} is moving at ${this.speed}km/h`);
+};
+
+CarEV.prototype.accelerate = function () {
+  this.speed += 10;
+  console.log(`${this.name} is moving at ${this.speed}km/h`);
+};
+
+// SOLUTION 2
+const EV = function (name, speed, charge) {
+  CarEV.call(this, name, speed);
+  this.charge = charge;
+};
+
+// for the instance to be able o inherit the CarEV (the parent function)
+EV.prototype = Object.create(CarEV.prototype);
+
+// SOLUTION 3
+EV.prototype.chargeBattery = function (chargeTo) {
+  console.log(this.charge);
+  this.charge = chargeTo;
+};
+EV.prototype.accelerate = function () {
+  this.speed += 20;
+  this.charge--;
+  console.log(`Tesla going at ${this.speed}
+    km/h, with a charge of ${this.charge}%'`);
+};
+// SOLUTION 4
+const Tesla = new EV(`Tesla`, 120, 23);
+// console.log(Tesla.accelerate());
+// console.log(Tesla.accelerate());
+Tesla.chargeBattery(90);
+// console.log(Tesla);
+// console.log(Tesla.accelerate());
+// // console.log(Tesla.accelerate());
+// console.log(Tesla.accelerate());
+// console.log(Tesla.accelerate());
+
+// TOPIC USING
