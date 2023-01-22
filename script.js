@@ -313,7 +313,7 @@ console.log(Ford.speed);
 // Ford.brake();
 // Ford.brake();
 
-// TOPIC INHERITANCE B/W : Class (constructors functions)
+// TOPIC (constructors functions)
 
 const PersonH = function (firstName, birthYear) {
   this.firstName = firstName;
@@ -431,4 +431,4 @@ Tesla.chargeBattery(90);
 // console.log(Tesla.accelerate());
 // console.log(Tesla.accelerate());
 
-// TOPIC USING
+// TOPIC USING adding INHERITANCE B/W : Class es6 classes
