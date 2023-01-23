@@ -258,7 +258,7 @@ Chiamaka.init(`Chiamaka`, 1999);
 Chiamaka.getAge();
 
 /*
-Coding Challenge #2
+Coding CHALLENGE #2
 Your tasks:
 1. Re-create Challenge #1, but this time using an ES6 class (call it 'CarCl')
 2. Add a getter called 'speedUS' which returns the current speed in mi/h (divide
@@ -359,7 +359,7 @@ console.log(mike instanceof Object);
 // mike.calAge()
 
 /* 
-Coding Challenge #3
+Coding CHALLENGE #3
 Your tasks:
 1. Use a constructor function to implement an Electric Car (called 'EV') as a child
 "class" of 'Car'. Besides a make and current speed, the 'EV' also has the
@@ -473,40 +473,61 @@ const bobo = new StudentCl(`Bobo Ikem`, 2014, `Medicine`);
 
 //🔍MORE EXAMPLES 🔍
 class Account {
+  //TOPIC ENCAPSULATION(EP) CLASS FIELDS AN METHOD
+  // EP Public fields (properties)👇🏽
+  // they are INSTANCES
+  local = navigator.language;
+  //////////////////////////
+  // PRIVATE FIELDS'
+  #movements = [];
+  #pin;
   constructor(owner, currency, pin) {
     this.owner = owner;
     this.currency = currency;
+
     //TOPIC ADDING ENCAPSULATION
-    //👇🏽👇🏽 _ 
+    //👇🏽👇🏽( _ )
     //Protected property
-    this._pin = pin;
+    // this._pin = pin;
+    // IMPLEMENTING PRIVATE FIELDS'
+    this.#pin = pin;
     //Protected property
-    this._movements = [];
-    this.local = navigator.language;
+    //////////////////////////
+    // this.#movements = [];
+    // this.local = navigator.language;
 
     // you even execute codes on the construction function
     console.log(`Thanks for opening an account, ${owner}`);
   }
 
-    // get access to mov but being able to manipulate it.
-    getMovement(){
-      return this._movements;
-    }
+  // PUBIC METHODS
+  // get access to mov but being able to manipulate it.
+  getMovement() {
+    return this.#movements;
+  }
 
   // API OF OUR APPLICATION
   deposit(val) {
-    this._movements.push(val);
+    this.#movements.push(val);
+    return this;
   }
 
   withdraw(val) {
     this.deposit(-val);
+    return this;
   }
   _approveLoan() {
     return true;
   }
   requestLoan(val) {
-   if(this._approveLoan) this.deposit(Math.floor(val / 1.022));
+    if (this._approveLoan) this.deposit(Math.floor(val / 1.022));
+    return this;
   }
+
+  // PRIVATE METHODS
+  // #approveLoan() {
+  //   return true;
+  // }
 }
 
 const acc1 = new Account(`Johnnie`, `NGN`, 1111);
@@ -514,11 +535,15 @@ acc1.deposit(900);
 acc1.deposit(500);
 acc1.withdraw(300);
 
-acc1.requestLoan(2000)
+acc1.requestLoan(2000);
 // acc1.getMovement.push(300)
+// console.log(acc1.#movements);
 console.log(acc1.getMovement());
-console.log(acc1);
 
+// using the chaining method
+acc1.deposit(500).withdraw(500).deposit(500).requestLoan(20000);
+
+console.log(acc1);
 
 // TOPIC USING adding INHERITANCE B/W : Object.create
 
@@ -550,4 +575,70 @@ const sopulu = Object.create(StudentProto);
 sopulu.initPro(`Sopulu`, 1999, `art`);
 // sopulu.getAge()
 
-cl
+/*
+CHALLENGE 4
+Coding Challenge #4
+Your tasks:
+1. Re-create Challenge #3, but this time using ES6 classes: create an 'EVCl'
+child class of the 'CarCl' class
+2. Make the 'charge' property private
+3. Implement the ability to chain the 'accelerate' and 'chargeBattery'
+methods of this class, and also update the 'brake' method in the 'CarCl'
+class. Then experiment with chaining!
+Test data:
+§ Data car 1: 'Rivian' going at 120 km/h, with a charge of 23%
+GOOD LUCK 😀
+*/
+
+class TsCar {
+  constructor(make, speed) {
+    this.make = make;
+    this.speed = speed;
+  }
+
+  accelerate() {
+    this.speed += 10;
+    console.log(`${this.make} is moving at ${this.speed}km/h`);
+  }
+  brake() {
+    this.speed -= 5;
+    console.log(`${this.make} is moving at ${this.speed}km/h`);
+    return this;
+  }
+  get speedUS() {
+    return this.speed / 1.6;
+  }
+
+  set speedUS(speed) {
+    this.speed = speed * 1.6;
+  }
+}
+
+class EVCl extends TsCar {
+  //PRIVATE
+  #charge;
+  constructor(make, speed, charge) {
+    super(make, speed);
+    this.#charge = charge;
+  }
+
+  chargeBattery(chargeTo) {
+    console.log(this.#charge);
+    this.#charge = chargeTo;
+    return this;
+  }
+
+  accelerate() {
+    this.speed += 20;
+    this.#charge--;
+    console.log(`Tesla going at ${this.speed}
+    km/h, with a charge of ${this.#charge}%'`);
+    return this;
+  }
+}
+
+//'Rivian' going at 120 km/h, with a charge of 23%
+
+const Rivian = new EVCl('Rivian', 120, 23);
+
+Rivian.brake().chargeBattery(38).accelerate();
