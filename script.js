@@ -140,7 +140,7 @@ class PersonCl {
   // this method will be added to .prototype of PersonCl
   // just like the constructor function
 
-  // They can basicaLly Know as : INSTANCES
+  // They are basicaLly Know as : METHOD
   calAgeD() {
     console.log(2022 - this.birthYear);
   }
@@ -159,7 +159,7 @@ class PersonCl {
     return this._fullName;
   }
 }
-
+// They are basicaLly Know as : INSTANCES
 const Onyi = new PersonCl(`Onyi Ikeokwu`, 2002);
 // // Onyi.calAgeD();
 // console.log(Onyi);
@@ -202,7 +202,7 @@ const Animal = function (firstName, birthYear) {
   this.yearBirth = birthYear;
 };
 
-const Cat = new Animal(`ELephant`, 2021);
+const ELephant = new Animal(`ELephant`, 2021);
 
 Animal.greeting = function () {
   // console.log(`hey there 👋🏼`);
@@ -212,7 +212,7 @@ Animal.greeting = function () {
 Animal.greeting();
 
 // this can't because it's the direct child of the
-// Animal.Cat ();
+// Animal.ELephant;
 
 // For classes
 
@@ -313,7 +313,7 @@ console.log(Ford.speed);
 // Ford.brake();
 // Ford.brake();
 
-// TOPIC (constructors functions)
+// TOPIC  INHERITANCE (constructors functions)
 
 const PersonH = function (firstName, birthYear) {
   this.firstName = firstName;
@@ -431,4 +431,123 @@ Tesla.chargeBattery(90);
 // console.log(Tesla.accelerate());
 // console.log(Tesla.accelerate());
 
-// TOPIC USING adding INHERITANCE B/W : Class es6 classes
+// TOPIC USING adding INHERITANCE B/W : Class ES 6 classes
+class PersonEs {
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  }
+  calAgeD() {
+    console.log(2022 - this.birthYear);
+  }
+  set fullName(name) {
+    // console.log(name.includes(` `));
+    if (name.includes(` `)) this._fullName = name;
+    else alert(`${name} is not a Full Name kindly input your Full Name `);
+  }
+  get fullName() {
+    return this._fullName;
+  }
+}
+
+class StudentCl extends PersonEs {
+  // 👇🏽 this only necessary when we have additional parameters
+  constructor(fullName, birthYear, course) {
+    //This Alway needs to happen first
+    // it is responsible for creating
+    // the `this keyword` this subclass
+    super(fullName, birthYear);
+    this.course = course;
+  }
+
+  introduce() {
+    console.log(
+      `Hello class my name is ${this.fullName} and I study ${this.course}`
+    );
+  }
+}
+
+const bobo = new StudentCl(`Bobo Ikem`, 2014, `Medicine`);
+// bobo.calAgeD();
+// bobo.introduce()
+
+//🔍MORE EXAMPLES 🔍
+class Account {
+  constructor(owner, currency, pin) {
+    this.owner = owner;
+    this.currency = currency;
+    //TOPIC ADDING ENCAPSULATION
+    //👇🏽👇🏽 _ 
+    //Protected property
+    this._pin = pin;
+    //Protected property
+    this._movements = [];
+    this.local = navigator.language;
+
+    // you even execute codes on the construction function
+    console.log(`Thanks for opening an account, ${owner}`);
+  }
+
+    // get access to mov but being able to manipulate it.
+    getMovement(){
+      return this._movements;
+    }
+
+  // API OF OUR APPLICATION
+  deposit(val) {
+    this._movements.push(val);
+  }
+
+  withdraw(val) {
+    this.deposit(-val);
+  }
+  _approveLoan() {
+    return true;
+  }
+  requestLoan(val) {
+   if(this._approveLoan) this.deposit(Math.floor(val / 1.022));
+  }
+}
+
+const acc1 = new Account(`Johnnie`, `NGN`, 1111);
+acc1.deposit(900);
+acc1.deposit(500);
+acc1.withdraw(300);
+
+acc1.requestLoan(2000)
+// acc1.getMovement.push(300)
+console.log(acc1.getMovement());
+console.log(acc1);
+
+
+// TOPIC USING adding INHERITANCE B/W : Object.create
+
+const PersonPro = {
+  getAge() {
+    console.log(2023 - this.birthYear);
+  },
+
+  init(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  },
+};
+
+const StudentProto = Object.create(PersonPro);
+
+StudentProto.initPro = function (fullName, birthYear, course) {
+  // console.log(this);
+  PersonPro.init.call(this, fullName, birthYear);
+  this.course = course;
+};
+
+const introduce = function () {
+  console.log(`Hell my name is ${this.firstName} and I study ${this.course}`);
+};
+
+const sopulu = Object.create(StudentProto);
+
+sopulu.initPro(`Sopulu`, 1999, `art`);
+// sopulu.getAge()
+
+cl
