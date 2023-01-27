@@ -590,8 +590,9 @@ Test data:
 GOOD LUCK 😀
 */
 
+// Note is must be a ES6 class you can extend
 class TsCar {
-  constructor(make, speed) {
+  constructor(make, speed) { 
     this.make = make;
     this.speed = speed;
   }
@@ -615,7 +616,7 @@ class TsCar {
 }
 
 class EVCl extends TsCar {
-  //PRIVATE
+  //PRIVATE FIELD
   #charge;
   constructor(make, speed, charge) {
     super(make, speed);
