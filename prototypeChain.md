@@ -1,10 +1,10 @@
-                      Prototype chain
+# Prototype chain
 
-The prototype chain is a mechanism used in JavaScript to look up properties and methods of an object. When you try to access a property or method of an object, the JavaScript engine first looks for it on the object itself. If it can't find it, it looks for it on the object's prototype, and if it still can't find it, it looks for it on the prototype's prototype, and so on, following the prototype chain.
+`The prototype chain is a mechanism used in JavaScript to look up properties and methods of an object. When you try to access a property or method of an object, the JavaScript engine first looks for it on the object itself. If it can't find it, it looks for it on the object's prototype, and if it still can't find it, it looks for it on the prototype's prototype, and so on, following the prototype chain.`
 
-This allows you to create a hierarchy of objects, where objects lower in the hierarchy inherit properties and methods from objects higher up in the hierarchy. This can be used to create reusable code and can help to reduce code duplication.
+`This allows you to create a hierarchy of objects, where objects lower in the hierarchy inherit properties and methods from objects higher up in the hierarchy. This can be used to create reusable code and can help to reduce code duplication`
 
-For example, you can have an object called "Animals" that has properties and methods that are common to all animals, such as "breathe" and "eat". Then, you can create other objects such as "Dog" and "Cat" that inherit from the "Animals" object and add their own properties and methods.
+*For example, you can have an object called "Animals" that has properties and methods that are common to all animals, such as "breathe" and "eat". Then, you can create other objects such as "Dog" and "Cat" that inherit from the "Animals" object and add their own properties and methods.
 
 To understand this better, you can think of the prototype chain like a big family tree. Each object is like a person and it inherits properties and methods from its parents, grandparents, and so on, that are represented by the prototypes, just like a person inherits traits from its ancestors.
 

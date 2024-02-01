@@ -2,8 +2,10 @@
 
 // TOPIC Constructor
 // when using constructor
+// 👇🏽 global variable
+const currentYear = new Date().getFullYear();
 const Person = function (firstName, birthYear) {
-  this.firstName = firstName;
+  this.firstName;
   this.yearBirth = birthYear;
 
   // you also create a method function inside constructor function
@@ -21,11 +23,12 @@ what happens when you call a function using the New Keyword
 */
 
 // u can then you that same function to create many object as yo want
+
 const Johnnie = new Person(`Johnnie`, 2003);
 const Nonye = new Person(`Nonye`, 2004);
 const Chimdindu = new Person(`Chimdindu`, 2008);
 
-console.log(Johnnie, Nonye, Chimdindu);
+// console.log(Johnnie, Nonye, Chimdindu);
 // console.log(Johnnie.calAge);
 
 // TOPIC Prototypes
@@ -34,17 +37,30 @@ console.log(Johnnie, Nonye, Chimdindu);
 // function do have access to the prototype method and property of that
 // constructor function.
 Person.prototype.calAge = function () {
-  // console.log(2023 - this.yearBirth);
+  const currentYear = new Date().getFullYear();
+  // console.log(this.__proto__);
+  // console.log(this);
+  this.age = currentYear - this.yearBirth;
+  // console.log(this.age);
 };
 
 Johnnie.calAge();
-Nonye.calAge();
 Chimdindu.calAge();
+Nonye.calAge();
+
+// console.log(Johnnie.age, Chimdindu.age, Nonye.age); //21, 16, 20
 
 // this possible because very object have access
 // To the method and properties from its prototype
-//which here Person.prototype 👇🏽👇🏽
-console.log(Johnnie.__proto__);
+//which here is the Person.prototype
+
+// SUBTOPIC .__proto__
+// the .__proto__ point directly to the Prototypes of the
+// parent constructor function which is accessible to the
+// public
+
+// console.log(Johnnie.__proto__);
+// console.log(Person.prototype);
 
 // Confirmation the person.prototype is prototype of Johnnie
 // it is the prototype of linked Object
@@ -56,9 +72,12 @@ Person.prototype.Surname = 'Modebe';
 
 // console.log(Johnnie.Surname, Chimdindu.Surname);
 
-// checking properties
-// console.log(Johnnie.hasOwnProperty(`firstName`));
-// console.log(Johnnie.hasOwnProperty(`Surname`));
+// checking properties of the objects and the prototype
+// console.log(Johnnie.hasOwnProperty(`firstName`)); // true
+// console.log(Johnnie.hasOwnProperty(`Surname`)); // false
+
+// console.log(Johnnie.hasOwnProperty(`age`)); // true
+// console.log(Person.hasOwnProperty(`age`)); // false
 //
 // console.log(Johnnie.__proto__);
 
@@ -66,8 +85,9 @@ Person.prototype.Surname = 'Modebe';
 
 //working with Arrays
 const arr = [2, 5, 7, 65, 4, 4];
-console.log(arr.__proto__);
-console.log(arr.__proto__ === Array.prototype); // true
+// console.log(arr.__proto__);
+// console.log(arr.toLocaleString()); // 2,5,7,65,4,4
+// console.log(arr.__proto__ === Array.prototype); // true
 
 // with you can add a new array method
 //😂 Avoid it. this just for experiment
@@ -75,6 +95,19 @@ console.log(arr.__proto__ === Array.prototype); // true
 Array.prototype.unique = function () {
   return [...new Set(this)];
 };
+// more example of creating your own array method
+// console.log(arr.unique()); // [2, 5, 7, 65, 4]
+Array.prototype.last = function () {
+  return this[this.length - 1];
+};
+// console.log(arr.last()); // 4
+
+Array.prototype.toObject = function () {
+  let obj = {};
+  for (let i = 0; i < this.length; i++) {}
+  return obj;
+};
+// console.log(arr.toObject()); // {0: 2, 1: 5, 2: 7, 3: 65, 4: 4, 5: 4}
 
 const h1 = document.querySelector(`h1`);
 
@@ -128,7 +161,12 @@ const Mercedes = new Car(`Mercedes`, 95);
 //  TOPIC ES6 CLASSES
 
 // class expression
-const PersonCl1 = class {};
+const PersonCl1 = class {
+  constructor(fullName, birthYear) {
+    this.fullName = fullName;
+    this.birthYear = birthYear;
+  }
+};
 
 // class declaration
 class PersonCl {
@@ -142,17 +180,17 @@ class PersonCl {
 
   // They are basicaLly Know as : METHOD
   calAgeD() {
-    console.log(2022 - this.birthYear);
+    console.log(currentYear - this.birthYear);
   }
-  //  console.log(fullName);
 
   // Be careful when ever you are trying to set a property
   // that already exist using the _under score
 
   set fullName(name) {
+    // console.log(name);
     // console.log(name.includes(` `));
     if (name.includes(` `)) this._fullName = name;
-    else alert(`${name} is not a Full Name kindly input your Full Name `);
+    else console.log(`${name} is not a Full Name kindly input your Full Name `);
   }
   // to be able to access the name using the dot notation
   get fullName() {
@@ -161,10 +199,11 @@ class PersonCl {
 }
 // They are basicaLly Know as : INSTANCES
 const Onyi = new PersonCl(`Onyi Ikeokwu`, 2002);
-// // Onyi.calAgeD();
-// console.log(Onyi);
+// Onyi.calAgeD();
+// console.log(Onyi); // Onyi Ikeokwu
 
-// PersonCl.fullNameChecker = `OnyiIkeokwu`
+Onyi.fullName = `OnyiIkeokwu Maryjane`;
+// console.log(Onyi); // OnyiIkeokwu Maryjane
 // console.log(Onyi.fullName);
 // console.log(PersonCl.fullNameChecker);
 
@@ -178,10 +217,17 @@ const account = {
   owner: `Johnnie`,
   movement: [200, 580, 904, 680, 400],
 
+  // get is used to get a value from an object
+  // it is like a property but it is a method
+  // THis is a getter method 👇🏽👇🏽
+  //  A getter must have exactly zero parameters.
+
   get latest() {
     return account.movement.slice().pop();
   },
 
+  // A setter must have exactly one parameter. A setter returns undefined.
+  // This is a setter method 👇🏽👇🏽
   set latestMov(mov) {
     this.movement.push(mov);
   },
@@ -205,11 +251,11 @@ const Animal = function (firstName, birthYear) {
 const ELephant = new Animal(`ELephant`, 2021);
 
 Animal.greeting = function () {
-  // console.log(`hey there 👋🏼`);
+  console.log(`hey there 👋🏼`);
 };
 
 // to call the function simply
-Animal.greeting();
+// Animal.greeting();
 
 // this can't because it's the direct child of the
 // Animal.ELephant;
@@ -223,18 +269,20 @@ class Phone {
   }
   //N/B Static are direct child of function and not the prototype
   static hey() {
-    // console.dir(this);
-    // console.dir(make);
+    // console.log(this);
   }
 }
 const Iphone11 = new Phone(`Iphone`, 11);
 Phone.hey();
+console.log(Iphone11.__proto__);
+// console.log(Iphone11.hasOwnProperty(fullName));
 
 // TOPIC OBJECT.CREATE
 
 const PersonProto = {
   getAge() {
-    // console.log(2037 - this.birthYear);
+    const currentYear = new Date().getFullYear();
+    // console.log(currentYear - this.birthYear);
   },
 
   init(fullName, birthYear) {
@@ -249,6 +297,10 @@ const amaka = Object.create(PersonProto);
 // putting values is into that object
 amaka.name = `Amaka`;
 amaka.birthYear = 2003;
+// console.log(amaka);
+// console.log(amaka.hasOwnProperty(`init`)); // false
+// console.log(amaka.__proto__.hasOwnProperty(`init`)); // true
+// console.log(PersonProto.hasOwnProperty(`init`)); // true
 
 amaka.getAge();
 
@@ -300,10 +352,10 @@ class CarCl {
 }
 const Ford = new CarCl(`Ford`, 120);
 
-console.log(Ford.speedUS);
+// console.log(Ford.speedUS);
 Ford.speedUS = 75;
-console.log(Ford);
-console.log(Ford.speed);
+// console.log(Ford);
+// console.log(Ford.speed);
 
 // Ford.accelerate();
 // Ford.accelerate();
@@ -321,12 +373,12 @@ const PersonH = function (firstName, birthYear) {
 };
 
 PersonH.prototype.calAge = function () {
-  console.log(2037 - this.birthYear);
+  console.log(currentYear - this.birthYear);
 };
 
 const Student = function (firstName, birthYear, course) {
-  // this.firstName = firstName;
-  // this.birthYear = birthYear;
+  this.firstName = firstName;
+  this.birthYear = birthYear;
 
   // /* 👉🏽 Use of Inheritance */
   PersonH.call(this, firstName, birthYear);
@@ -344,7 +396,8 @@ Student.prototype = Object.create(PersonH.prototype);
 // };
 Student.prototype.constructor = Student;
 
-console.dir(Student.prototype.constructor);
+console.log(Student.prototype.constructor);
+console.log(Student.prototype.constructor, Student.__proto__);
 const mike = new Student(`Mike`, 2002, `Computer Science`);
 console.dir(Student);
 
@@ -352,9 +405,9 @@ console.dir(mike);
 console.log(mike);
 console.log(mike.__proto__);
 
-console.log(mike instanceof Student);
-console.log(mike instanceof PersonH);
-console.log(mike instanceof Object);
+// console.log(mike instanceof Student);
+// console.log(mike instanceof PersonH);
+// console.log(mike instanceof Object);
 // mike.introduce()
 // mike.calAge()
 
@@ -362,7 +415,7 @@ console.log(mike instanceof Object);
 Coding CHALLENGE #3
 Your tasks:
 1. Use a constructor function to implement an Electric Car (called 'EV') as a child
-"class" of 'Car'. Besides a make and current speed, the 'EV' also has the
+"class" of 'Car'. Besides a make (brand name) and current speed, the 'EV' also has the
 current battery charge in % ('charge' property)
 2. Implement a 'chargeBattery' method which takes an argument
 'chargeTo' and sets the battery charge to 'chargeTo'
@@ -390,15 +443,16 @@ const CarEV = function (name, speed) {
 //   console.log(`${this.name} is moving at ${this.speed}km/h`);
 // }
 
-CarEV.prototype.brake = function () {
-  this.speed -= 5;
-  console.log(`${this.name} is moving at ${this.speed}km/h`);
-};
+// CarEV.prototype.brake = function () {
+//   this.speed -= 5;
+//   console.log(`${this.name} is moving at ${this.speed}km/h`);
+// };
 
-CarEV.prototype.accelerate = function () {
-  this.speed += 10;
-  console.log(`${this.name} is moving at ${this.speed}km/h`);
-};
+// CarEV.prototype.accelerate = function () {
+//   this.speed += 20;
+//   this.charge =
+//   console.log(`${this.name} is moving at ${this.speed}km/h`);
+// };
 
 // SOLUTION 2
 const EV = function (name, speed, charge) {
@@ -422,23 +476,31 @@ EV.prototype.accelerate = function () {
 };
 // SOLUTION 4
 const Tesla = new EV(`Tesla`, 120, 23);
-// console.log(Tesla.accelerate());
-// console.log(Tesla.accelerate());
 Tesla.chargeBattery(90);
+console.log(Tesla);
+
+// Tesla.accelerate();
+// console.log(Tesla);
+// Tesla.accelerate();
+// console.log(Tesla);
+// Tesla.accelerate();
 // console.log(Tesla);
 // console.log(Tesla.accelerate());
 // // console.log(Tesla.accelerate());
 // console.log(Tesla.accelerate());
 // console.log(Tesla.accelerate());
 
-// TOPIC USING adding INHERITANCE B/W : Class ES 6 classes
+// TOPIC USING adding INHERITANCE B/W : Class ES6 classes
 class PersonEs {
+  /** The fundamental part of most classes is its constructor,
+which sets up each instance's initial state and handles any
+parameters that were passed when calling new */
   constructor(fullName, birthYear) {
     this.fullName = fullName;
     this.birthYear = birthYear;
   }
   calAgeD() {
-    console.log(2022 - this.birthYear);
+    console.log(currentYear - this.birthYear); // was first written on 2022
   }
   set fullName(name) {
     // console.log(name.includes(` `));
@@ -450,7 +512,18 @@ class PersonEs {
   }
 }
 
+// The extend keyword is used to create an Inheritance
+// Of the parent function in Es6.
 class StudentCl extends PersonEs {
+  /**Inheritance works just like it does in
+   * other object-oriented languages:
+   * methods defined on the parent function are
+   * accessible in the extending subclass (child Class).
+   * If the subclass declares its own constructor
+   * then it must invoke the parents
+   * constructor via super()
+   * before it can access the .this keyword */
+
   // 👇🏽 this only necessary when we have additional parameters
   constructor(fullName, birthYear, course) {
     //This Alway needs to happen first
@@ -467,6 +540,7 @@ class StudentCl extends PersonEs {
   }
 }
 
+console.log(StudentCl instanceof PersonEs);
 const bobo = new StudentCl(`Bobo Ikem`, 2014, `Medicine`);
 // bobo.calAgeD();
 // bobo.introduce()
@@ -497,7 +571,7 @@ class Account {
     // this.local = navigator.language;
 
     // you even execute codes on the construction function
-    console.log(`Thanks for opening an account, ${owner}`);
+    // console.log(`Thanks for opening an account, ${owner}`);
   }
 
   // PUBIC METHODS
@@ -538,7 +612,7 @@ acc1.withdraw(300);
 acc1.requestLoan(2000);
 // acc1.getMovement.push(300)
 // console.log(acc1.#movements);
-console.log(acc1.getMovement());
+// console.log(acc1.getMovement());
 
 // using the chaining method
 acc1.deposit(500).withdraw(500).deposit(500).requestLoan(20000);
@@ -549,7 +623,7 @@ console.log(acc1);
 
 const PersonPro = {
   getAge() {
-    console.log(2023 - this.birthYear);
+    console.log(currentYear - this.birthYear); // first written on Jan 2023
   },
 
   init(fullName, birthYear) {
@@ -559,9 +633,10 @@ const PersonPro = {
 };
 
 const StudentProto = Object.create(PersonPro);
+// console.log(StudentProto); {}
 
 StudentProto.initPro = function (fullName, birthYear, course) {
-  // console.log(this);
+  console.log(this);
   PersonPro.init.call(this, fullName, birthYear);
   this.course = course;
 };
@@ -571,7 +646,7 @@ const introduce = function () {
 };
 
 const sopulu = Object.create(StudentProto);
-
+// console.log(sopulu); {}
 sopulu.initPro(`Sopulu`, 1999, `art`);
 // sopulu.getAge()
 
@@ -592,7 +667,7 @@ GOOD LUCK 😀
 
 // Note is must be a ES6 class you can extend
 class TsCar {
-  constructor(make, speed) { 
+  constructor(make, speed) {
     this.make = make;
     this.speed = speed;
   }
